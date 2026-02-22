@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0807">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Great Lent ✝">
+<title>✝ Orthodox Great Lent 2026</title>
+<style>
+:root{--bg:#0a0807;--gold:#c8a050;--cream:#f5ebe0;--muted:#9a8070;--border:#2a1e0e;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--cream);font-family:Georgia,serif;display:flex;flex-direction:column;padding-top:var(--st)}
+#nav{display:flex;background:#0d0a07;border-top:1px solid #2a1e0e;padding:8px 0;padding-bottom:calc(8px + var(--sb));flex-shrink:0;z-index:100}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:#6a5840;cursor:pointer;font-size:9px;padding:4px 0;font-family:Georgia,serif}
+.nb .ni{font-size:21px;line-height:1}
+.nb.active{color:var(--gold)}
+#screens{flex:1;overflow:hidden;position:relative}
+.sc{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none}
+.sc.active{display:block}
+.stitle{font-size:10px;font-family:monospace;letter-spacing:.2em;color:#a07050;padding:14px 16px 6px;text-transform:uppercase}
+.card{background:#120e0a;border:1px solid var(--border);border-radius:12px;margin:0 14px 10px;padding:14px 16px}
+.pb{padding-bottom:50px}
+/* TODAY */
+#thdr{background:linear-gradient(180deg,#1a0f08,#0a0807);padding:16px 16px 12px;border-bottom:1px solid var(--border);text-align:center}
+#thdr h1{font-size:21px;color:var(--cream);margin-bottom:2px}
+#thdr .sub{font-size:10px;color:var(--muted);font-family:monospace;letter-spacing:.2em}
+#npill{margin:10px auto 0;display:inline-block;background:#1e1208;border:1px solid #6b4020;border-radius:20px;padding:6px 14px;font-size:12px;color:#c8a060}
+.tdc{margin:12px 14px;border-radius:14px;overflow:hidden}
+.tdc-top{padding:14px 16px 10px}
+.tdc-wk{font-size:10px;font-family:monospace;color:#888;margin-bottom:3px;letter-spacing:.1em}
+.tdc-lbl{font-size:17px;font-weight:700;line-height:1.25;margin-bottom:8px}
+.cbtn{padding:5px 14px;border-radius:20px;font-size:11px;border:1px solid;cursor:pointer;font-family:Georgia,serif}
+.cbtn.done{background:#1a3a1a;border-color:#27ae60;color:#60d060}
+.cbtn.undone{background:#1a1208;border-color:#555;color:#888}
+.ir{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;border-top:1px solid #1a1410}
+.ir-ic{font-size:17px;flex-shrink:0;margin-top:2px}
+.ir-lb{font-size:10px;font-family:monospace;color:#777;margin-bottom:2px;text-transform:uppercase;letter-spacing:.1em}
+.ir-bd{font-size:12px;color:#c8c0b0;line-height:1.55}
+.ir-rd{font-size:12px;color:#b8d8b8;font-style:italic;line-height:1.7;padding:2px 0}
+#pgw{margin:0 14px 10px;background:#120e0a;border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+#pgbb{height:6px;background:#2a1e0e;border-radius:3px;margin:8px 0 4px;overflow:hidden}
+#pgbf{height:100%;background:linear-gradient(90deg,#8b6030,#c8a050);border-radius:3px;transition:width .4s}
+#pglb{font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
+#kscroll{display:flex;gap:8px;overflow-x:auto;padding:0 14px 14px;scrollbar-width:none}
+#kscroll::-webkit-scrollbar{display:none}
+.kc{flex-shrink:0;background:#1a1208;border-radius:10px;padding:8px 12px;text-align:center;cursor:pointer;min-width:82px;border:1px solid transparent}
+#pnum{font-size:48px;font-weight:700;color:var(--gold);text-align:center}
+/* CALENDAR */
+#csticky{position:sticky;top:0;z-index:40;background:var(--bg)}
+#ctabs{display:flex;gap:8px;overflow-x:auto;padding:10px 12px;background:#100c08;border-bottom:1px solid var(--border);scrollbar-width:none}
+#ctabs::-webkit-scrollbar{display:none}
+.ctab{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid #3d2a1a;background:#1a1208;color:#9a8070;font-family:Georgia,serif;white-space:nowrap}
+.ctab.active{background:#8b6030;border-color:#c8a060;color:#f5ebe0}
+#csearch{width:calc(100% - 28px);margin:8px 14px 4px;background:#1a1208;border:1px solid #3d2a1a;border-radius:20px;padding:8px 14px;color:var(--cream);font-size:13px;font-family:Georgia;outline:none;display:block}
+.whdr{padding:10px 14px;background:#120e0a;border-bottom:1px solid var(--border);border-top:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.whdr-t{font-size:13px;font-weight:700}
+.dr{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-bottom:1px solid #1a1410;cursor:pointer}
+.dr:active{opacity:.65}
+.dr.past{opacity:.45}
+.dr.today-row{box-shadow:inset 3px 0 0 var(--gold)}
+.dr-ic{font-size:19px;flex-shrink:0;margin-top:2px}
+.dr-inf{flex:1;min-width:0}
+.dr-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px}
+.dr-dt{font-size:10px;color:#777;font-family:monospace}
+.dr-badge{font-size:9px;padding:1px 6px;border-radius:4px;font-family:monospace;border:1px solid transparent}
+.dr-td{background:#f1c40f;color:#000;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:700}
+.dr-lbl{font-size:13px;font-weight:700;line-height:1.3}
+.dr-rd{font-size:11px;color:#7a9a7a;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic}
+.dr-cd{font-size:10px;color:#555;font-family:monospace;flex-shrink:0}
+/* PRAYER */
+.ptxt{background:#120e0a;border:1px solid #3d2a1a;border-radius:14px;margin:12px 14px;padding:20px 18px}
+.pl{font-size:15px;line-height:1.85;margin-bottom:2px}
+.pl.neg{color:#e07070}.pl.pos{color:#70d090}.pl.pet{color:var(--gold)}
+.pl.pro{font-size:11px;color:#888;font-family:monospace;text-align:center;padding:8px 0;border-top:1px solid #2a1e0e;border-bottom:1px solid #2a1e0e;margin:6px 0 10px}
+.pl.bow{font-size:11px;color:#777;font-family:monospace;text-align:center;padding:4px}
+.pscr{background:#0d1a0d;border:1px solid #1a4a1a;border-radius:14px;margin:0 14px 14px;padding:18px 16px}
+.pscr-t{font-size:11px;font-family:monospace;color:#60a060;letter-spacing:.15em;margin-bottom:10px;font-weight:700}
+.pscr-b{font-size:13px;color:#b8d8b8;line-height:1.85;font-style:italic}
+.vc{border-radius:10px;margin:0 14px 10px;padding:13px 14px}
+.vc.vice{background:#1a0d0d;border:1px solid #4a1a1a}
+.vc.virt{background:#0d1a10;border:1px solid #1a4a20}
+.vc-t{font-size:13px;font-weight:700;margin-bottom:5px}
+.vc-b{font-size:12px;line-height:1.65}
+.vc.vice .vc-b{color:#b8a0a0}.vc.virt .vc-b{color:#a0b8a0}
+/* ROUTINE */
+.ri{display:flex;gap:12px;padding:10px 14px;background:#120e0a;border-bottom:1px solid #1a1410;align-items:flex-start}
+.ri:first-child{border-radius:10px 10px 0 0;border:1px solid var(--border);border-bottom:1px solid #1a1410}
+.ri.last{border-radius:0 0 10px 10px;border:1px solid var(--border);border-top:none}
+.ri:not(:first-child):not(.last){border-left:1px solid var(--border);border-right:1px solid var(--border)}
+.ri-ic{font-size:20px;flex-shrink:0}
+.ri-b{flex:1}
+.ri-t{font-size:13px;font-weight:700;margin-bottom:2px}
+.ri-s{font-size:11px;color:#9a8070;line-height:1.55}
+.rtag{display:inline-block;font-size:9px;font-family:monospace;padding:1px 6px;border-radius:4px;margin-top:4px;margin-right:4px}
+.rblk{margin:0 14px 12px}
+/* MODAL */
+#mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;align-items:flex-end}
+#mov.open{display:flex}
+#mbox{background:#0f0d0b;border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 calc(24px + var(--sb));position:relative}
+.mdrag{width:44px;height:4px;background:#3a3028;border-radius:2px;margin:14px auto 0}
+#mscroll{padding:12px 18px 10px}
+.mdt{font-size:11px;font-family:monospace;margin-bottom:4px}
+.mtitle{font-size:19px;font-weight:700;line-height:1.25;margin-bottom:4px}
+.mcrw{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #2a1e0e}
+.msec{background:#181614;border-radius:10px;padding:13px 14px;margin-bottom:10px;border:1px solid #2a2010}
+.msec-t{font-size:10px;font-family:monospace;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.1em}
+.msec-b{font-size:13px;color:#c8c0b0;line-height:1.65}
+.mrl{font-size:13px;color:#b8d8b8;line-height:1.8;font-style:italic;padding:3px 0;border-bottom:1px solid #1a2a1a}
+.mrl:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<div id="screens">
+
+<!-- TODAY -->
+<div class="sc active" id="sc-today">
+  <div id="thdr">
+    <div class="sub">ORTHODOX GREAT LENT 2026</div>
+    <h1>✝ The Great Fast</h1>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px">Feb 23 — Apr 12 · @seeking.theosis</div>
+    <div id="npill">Loading…</div>
+  </div>
+  <div id="tcwrap"></div>
+  <div id="pgw">
+    <div id="pglb"><span>📖 Readings Complete</span><span id="pgct">0 / 40</span></div>
+    <div id="pgbb"><div id="pgbf" style="width:0%"></div></div>
+    <div style="font-size:10px;color:#6a5040;margin-top:2px">Tap any day → mark ✓ Done to track progress</div>
+  </div>
+  <div class="stitle">Key Dates</div>
+  <div id="kscroll"></div>
+  <div class="stitle">Countdown to Pascha 🌟</div>
+  <div class="card" style="text-align:center;padding:20px">
+    <div id="pnum">–</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:4px">days until Christ is Risen!</div>
+    <div style="font-size:11px;color:#6a5840;margin-top:6px">April 12, 2026</div>
+  </div>
+  <div class="pb"></div>
+</div>
+
+<!-- CALENDAR -->
+<div class="sc" id="sc-cal">
+  <div id="csticky">
+    <div id="ctabs">
+      <button class="ctab active" onclick="setCT('all',this)">All</button>
+      <button class="ctab" onclick="setCT('sundays',this)">Sundays</button>
+      <button class="ctab" onclick="setCT('weekdays',this)">Weekdays</button>
+      <button class="ctab" onclick="setCT('feasts',this)">Feasts</button>
+      <button class="ctab" onclick="setCT('holyweek',this)">Holy Week</button>
+      <button class="ctab" onclick="setCT('undone',this)">Unread ◯</button>
+    </div>
+    <input id="csearch" type="search" placeholder="🔍  Search readings, days…" oninput="doCS(this.value)">
+  </div>
+  <div id="cbody" class="pb"></div>
+</div>
+
+<!-- PRAYER -->
+<div class="sc" id="sc-prayer">
+  <div style="padding:16px 16px 10px;border-bottom:1px solid var(--border);background:var(--bg)">
+    <div style="font-size:10px;font-family:monospace;color:#a07050;letter-spacing:.2em;margin-bottom:4px">LENTEN PRAYERS</div>
+    <div style="font-size:20px;font-weight:700">Prayer of St. Ephraim</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px">+ Prayer Before Holy Scripture</div>
+  </div>
+  <div class="stitle">Prayer Before Reading Holy Scripture</div>
+  <div class="pscr">
+    <div class="pscr-t">📖 SAY THIS BEFORE YOUR DAILY READINGS</div>
+    <div class="pscr-b">
+      Illumine our hearts, O Master Who lovest mankind,<br>
+      with the pure light of Thy divine knowledge.<br><br>
+      Open the eyes of our mind to the understanding<br>
+      of Thy gospel teachings.<br><br>
+      Implant also in us the fear of Thy blessed commandments,<br>
+      that trampling down all carnal desires,<br>
+      we may enter upon a spiritual manner of living,<br>
+      both thinking and doing such things as are well-pleasing unto Thee.<br><br>
+      For Thou art the illumination of our souls and bodies,<br>
+      O Christ our God,<br>
+      and unto Thee we ascribe glory,<br>
+      together with Thy Father, Who is from everlasting,<br>
+      and Thine all-holy, good, and life-creating Spirit,<br>
+      now and ever and unto ages of ages. Amen.
+    </div>
+  </div>
+  <div class="stitle">Prayer of St. Ephraim — Full Text with Prostrations</div>
+  <div class="ptxt">
+    <div class="pl" style="color:#888;font-size:11px;font-style:italic;margin-bottom:12px">Said twice at every Lenten weekday service (Mon–Fri). Three prostrations + twelve bows.</div>
+    <div class="pl pet">O Lord and Master of my life!</div><br>
+    <div class="pl neg">Take from me the spirit of <strong>sloth</strong>,</div>
+    <div class="pl neg"><strong>despondency</strong>, lust of <strong>power</strong>,</div>
+    <div class="pl neg">and <strong>idle talk</strong>.</div>
+    <div class="pl pro">🙇 FULL PROSTRATION (sign of Cross → bow to floor)</div>
+    <div class="pl pos">But give rather the spirit of <strong>chastity</strong>,</div>
+    <div class="pl pos"><strong>humility</strong>, <strong>patience</strong>,</div>
+    <div class="pl pos">and <strong>love</strong> to Thy servant.</div>
+    <div class="pl pro">🙇 FULL PROSTRATION</div>
+    <div class="pl pet">Yea, O Lord and King!</div>
+    <div class="pl pet">Grant me to see <strong>my own errors</strong></div>
+    <div class="pl pet">and <strong>not to judge my brother</strong>,</div>
+    <div class="pl pet">for Thou art blessed unto ages of ages. Amen.</div>
+    <div class="pl pro">🙇 FULL PROSTRATION</div>
+    <div class="pl bow" style="margin-top:8px">Then 12 bows from the waist, saying at each:</div>
+    <div class="pl bow" style="color:var(--cream);font-style:italic;font-size:14px">"O God, cleanse me a sinner."</div>
+    <br><div class="pl" style="color:#888;font-size:11px">Then repeat the entire prayer once more → one final prostration.</div>
+  </div>
+  <div class="stitle">Who Was St. Ephraim?</div>
+  <div class="card" style="border-color:#3d2a1a">
+    <div style="font-size:14px;font-weight:700;margin-bottom:8px">St. Ephraim of Nisibis (c. 306–373 AD) 🌿</div>
+    <div style="font-size:13px;color:#c8c0b0;line-height:1.75">A deacon, theologian, and poet of the 4th-century Syrian Church — called the <em>"Harp of the Holy Spirit."</em> He wrote thousands of hymns in Syriac. His prayer became the central Lenten prayer of the entire Orthodox Church, prayed at every weekday service from Cheesefare Week through Holy Wednesday. Feast: <strong style="color:var(--cream)">Jan 28 (Julian) / Feb 10 (Gregorian)</strong>.</div>
+  </div>
+  <div class="stitle">The Four Vices We Ask to Lose</div>
+  <div class="vc vice"><div class="vc-t" style="color:#e07070">😴 Sloth — Root of All Sin</div><div class="vc-b">Not just laziness but spiritual paralysis — the cynicism that says "what's the point?" It poisons the will to repent. Fr. Schmemann: "the poisoning of spiritual energy at its very source."</div></div>
+  <div class="vc vice"><div class="vc-t" style="color:#e07070">😔 Despondency — Despair About Mercy</div><div class="vc-b">Convinces us our sins are too great, that repentance is useless. The Prodigal Son story is the antidote: the Father always runs to meet us.</div></div>
+  <div class="vc vice"><div class="vc-t" style="color:#e07070">👑 Lust of Power — Domination of Others</div><div class="vc-b">The desire to control, to win, to impose our will. The antidote is the Cross: "Whoever wishes to be first shall be your slave" — Christ washed feet.</div></div>
+  <div class="vc vice"><div class="vc-t" style="color:#e07070">💬 Idle Talk — Scattered, Empty Speech</div><div class="vc-b">Gossip, complaints, speech without substance. The Desert Fathers: "Sit in your cell and your cell will teach you everything." Silence is a form of fasting.</div></div>
+  <div class="stitle">The Four Virtues We Ask to Receive</div>
+  <div class="vc virt"><div class="vc-t" style="color:#70d090">🧠 Chastity — Whole-mindedness</div><div class="vc-b">The Greek sophrosyne: soundness and wholeness of mind. Directing all energy toward God rather than scattering it in distraction and dissipation.</div></div>
+  <div class="vc virt"><div class="vc-t" style="color:#70d090">🙏 Humility — Seeing Ourselves Truthfully</div><div class="vc-b">Not self-deprecation but truth: seeing ourselves as we are before God. "God, be merciful to me, a sinner." The doorway through which all grace enters.</div></div>
+  <div class="vc virt"><div class="vc-t" style="color:#70d090">⏳ Patience — Long-suffering Without Bitterness</div><div class="vc-b">The capacity to endure difficulty without despair. Transforms pain into prayer. The fast itself is a school of patience: the body learns to wait, so the soul learns to trust.</div></div>
+  <div class="vc virt"><div class="vc-t" style="color:#70d090">❤️ Love — The Crown of All Virtues</div><div class="vc-b">Self-giving agape, not sentiment. All Lenten discipline — prayer, fasting, almsgiving — exists only to make this possible. "By this shall all men know that you are My disciples."</div></div>
+  <div class="stitle">How to Use Both Prayers at Home</div>
+  <div class="card" style="border-color:#3d2a1a">
+    <div style="font-size:13px;color:#c8c0b0;line-height:1.95">
+      <strong style="color:var(--cream)">Before reading:</strong> Say the Prayer Before Holy Scripture first.<br>
+      <strong style="color:var(--cream)">Step 1:</strong> Stand before your icons. Sign of the Cross.<br>
+      <strong style="color:var(--cream)">Step 2:</strong> Part 1 of St. Ephraim → full prostration.<br>
+      <strong style="color:var(--cream)">Step 3:</strong> Part 2 → full prostration.<br>
+      <strong style="color:var(--cream)">Step 4:</strong> Part 3 → full prostration.<br>
+      <strong style="color:var(--cream)">Step 5:</strong> 12 waist bows: "O God, cleanse me a sinner."<br>
+      <strong style="color:var(--cream)">Step 6:</strong> Repeat the whole prayer once more → final prostration.<br><br>
+      <em style="color:var(--muted);font-size:12px">Mon–Fri only. Not on Saturdays, Sundays, or Great Feasts.</em>
+    </div>
+  </div>
+  <div class="pb"></div>
+</div>
+
+<!-- ROUTINE -->
+<div class="sc" id="sc-routine">
+  <div style="padding:16px 16px 10px;border-bottom:1px solid var(--border);background:var(--bg)">
+    <div style="font-size:10px;font-family:monospace;color:#a07050;letter-spacing:.2em;margin-bottom:4px">DAILY DISCIPLINE</div>
+    <div style="font-size:20px;font-weight:700">Lenten Routine</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px">A suggested daily rhythm for Great Lent</div>
+  </div>
+  <div class="stitle">☀️ Morning — Upon Waking</div>
+  <div class="rblk">
+    <div class="ri"><div class="ri-ic">🌅</div><div class="ri-b"><div class="ri-t">Morning Prayers (10–15 min)</div><div class="ri-s">Begin with the Trisagion, then the morning prayer rule from your prayer book. Ask a blessing on the day.</div><span class="rtag" style="background:#1a2a1a;color:#60a060;border:1px solid #2a4a2a">🙏 Prayer</span></div></div>
+    <div class="ri"><div class="ri-ic">✝️</div><div class="ri-b"><div class="ri-t">Prayer of St. Ephraim (5–10 min)</div><div class="ri-s">3 sections, 3 prostrations, 12 bows, then repeated. The heart of the Lenten rule. Done at the start and end of each day.</div><span class="rtag" style="background:#2a1a1a;color:#a06060;border:1px solid #4a2a2a">🙇 Prostrations</span></div></div>
+    <div class="ri"><div class="ri-ic">📖</div><div class="ri-b"><div class="ri-t">Prayer Before Scripture + Daily Reading</div><div class="ri-s">Say the Prayer Before Reading Holy Scripture, then read today's assigned passages. Check them off in the Calendar tab when done.</div><span class="rtag" style="background:#0d1a0d;color:#60b060;border:1px solid #1a4a1a">📖 Scripture</span></div></div>
+    <div class="ri last"><div class="ri-ic">🍵</div><div class="ri-b"><div class="ri-t">Break Fast — Simple, Late, Mindful</div><div class="ri-s">Mon/Wed/Fri: one meal in the evening ideally. Tue/Thu: oil and wine permitted. Fast with purpose, not just habit.</div><span class="rtag" style="background:#2a1a0a;color:#a07030;border:1px solid #4a2a0a">🍽️ Fasting</span></div></div>
+  </div>
+  <div class="stitle">⏸️ Midday — Work & World</div>
+  <div class="rblk">
+    <div class="ri"><div class="ri-ic">🔁</div><div class="ri-b"><div class="ri-t">Jesus Prayer — Throughout the Day</div><div class="ri-s">"Lord Jesus Christ, Son of God, have mercy on me, a sinner." Repeat as you walk, drive, wait. The prayer of the heart carried through the day.</div><span class="rtag" style="background:#1a2a1a;color:#60a060;border:1px solid #2a4a2a">🙏 Prayer</span></div></div>
+    <div class="ri"><div class="ri-ic">🤐</div><div class="ri-b"><div class="ri-t">Fast from Idle Talk</div><div class="ri-s">Reduce scrolling, entertainment, gossip. 30 min of intentional quiet changes the inner climate. The Desert Fathers: silence is the mother of prayer.</div><span class="rtag" style="background:#2a2a1a;color:#a0a030;border:1px solid #4a4a1a">⚡ Discipline</span></div></div>
+    <div class="ri last"><div class="ri-ic">🤲</div><div class="ri-b"><div class="ri-t">Almsgiving — The Third Pillar</div><div class="ri-s">Each week: give something — money, time, a call to someone lonely, a meal. Do it secretly. Prayer, fasting, and almsgiving form the three pillars of Lenten repentance.</div><span class="rtag" style="background:#1a2a2a;color:#30a0a0;border:1px solid #1a4a4a">❤️ Alms</span></div></div>
+  </div>
+  <div class="stitle">🕯️ Evening — Return to God</div>
+  <div class="rblk">
+    <div class="ri"><div class="ri-ic">⛪</div><div class="ri-b"><div class="ri-t">Church Services — When Possible</div><div class="ri-s"><strong style="color:var(--cream)">Wed & Fri evenings:</strong> Liturgy of the Presanctified Gifts — the great Lenten service. Come fasting from morning. Other evenings: Vespers and Compline.</div><span class="rtag" style="background:#1a1a2a;color:#6060c0;border:1px solid #2a2a4a">⛪ Church</span></div></div>
+    <div class="ri"><div class="ri-ic">📚</div><div class="ri-b"><div class="ri-t">Spiritual Reading (15–30 min)</div><div class="ri-s"><em>The Ladder of Divine Ascent</em> · <em>Great Lent</em> (Fr. Schmemann) · <em>Life of St. Mary of Egypt</em> · The Psalter · Lives of Saints.</div><span class="rtag" style="background:#1a1a2a;color:#6060c0;border:1px solid #2a2a4a">📖 Reading</span></div></div>
+    <div class="ri"><div class="ri-ic">🌙</div><div class="ri-b"><div class="ri-t">Evening Prayers + Examination (10–15 min)</div><div class="ri-s">Evening prayer rule. Where did sloth, despondency, power-seeking, or idle talk win today? Ask forgiveness. Then rest in peace.</div><span class="rtag" style="background:#1a2a1a;color:#60a060;border:1px solid #2a4a2a">🙏 Prayer</span></div></div>
+    <div class="ri last"><div class="ri-ic">✝️</div><div class="ri-b"><div class="ri-t">Prayer of St. Ephraim (evening repeat)</div><div class="ri-s">Repeat with prostrations. End your day as you began — on your knees, turning from self to God.</div><span class="rtag" style="background:#2a1a1a;color:#a06060;border:1px solid #4a2a2a">🙇 Prostrations</span></div></div>
+  </div>
+  <div class="stitle">📅 Weekly Pattern</div>
+  <div class="card" style="border-color:#3d2a1a">
+    <div style="font-size:13px;color:#c8c0b0;line-height:2.1">
+      <strong style="color:var(--cream)">Monday:</strong> Renewal. Fresh start. Xerophagy.<br>
+      <strong style="color:var(--cream)">Tuesday:</strong> Oil & wine permitted.<br>
+      <strong style="color:var(--cream)">Wednesday:</strong> Strict fast. ★ <em>Presanctified Liturgy</em> tonight.<br>
+      <strong style="color:var(--cream)">Thursday:</strong> Oil & wine. Midweek spiritual reading.<br>
+      <strong style="color:var(--cream)">Friday:</strong> Strict fast. ★ <em>Presanctified / Akathist.</em><br>
+      <strong style="color:var(--cream)">Saturday:</strong> No prostrations. Fish & oil permitted. Souls Saturdays = memorial.<br>
+      <strong style="color:var(--cream)">Sunday:</strong> 🌟 <em>Little Pascha.</em> Fish, wine & oil. Rejoice!
+    </div>
+  </div>
+  <div class="card" style="text-align:center;padding:20px;border-color:#6b4020">
+    <div style="font-size:22px;margin-bottom:10px">🕊️</div>
+    <div style="font-size:13px;color:#c8c0b0;line-height:1.8;font-style:italic">"The goal of Great Lent is not suffering. It is Pascha — the joy of the Resurrection. Every prostration, every hour of prayer is a step toward that dawn."</div>
+    <div style="font-size:11px;color:#6a5840;margin-top:10px">— After Fr. Alexander Schmemann</div>
+  </div>
+  <div class="pb"></div>
+</div>
+
+</div><!-- screens -->
+
+<div id="nav">
+  <button class="nb active" onclick="showSc('today',this)"><span class="ni">☀️</span>Today</button>
+  <button class="nb" onclick="showSc('cal',this)"><span class="ni">📅</span>Calendar</button>
+  <button class="nb" onclick="showSc('prayer',this)"><span class="ni">🙏</span>Prayers</button>
+  <button class="nb" onclick="showSc('routine',this)"><span class="ni">⏰</span>Routine</button>
+</div>
+
+<!-- MODAL -->
+<div id="mov" onclick="closeMod(event)">
+  <div id="mbox">
+    <div class="mdrag"></div>
+    <div id="mscroll">
+      <div id="mdt" class="mdt"></div>
+      <div id="mtitle" class="mtitle"></div>
+      <div id="mcrw" class="mcrw"></div>
+      <div id="mbody"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const READINGS={"2026-02-23":["Isaiah 1:1-20","Genesis 1:1-13","Proverbs 1:1-20"],"2026-02-24":["Luke 7:17-30","II Corinthians 4:6-15","Matthew 11:2-15"],"2026-02-25":["Isaiah 2:3-11","Genesis 1:24-2:3","Proverbs 2:1-22"],"2026-02-26":["Isaiah 2:11-21","Genesis 2:4-19","Proverbs 3:1-18"],"2026-02-27":["Isaiah 3:1-14","Genesis 2:20-3:20","Proverbs 3:19-34"],"2026-02-28":["II Timothy 2:1-10","Mark 2:23-28; 3:1-5"],"2026-03-01":["Luke 24:12-35","Hebrews 11:24-26,32-40","John 1:43-51"],"2026-03-02":["Isaiah 4:2-5:7","Genesis 3:21-4:7","Proverbs 3:34-4:22"],"2026-03-03":["Isaiah 5:7-16","Genesis 4:8-15","Proverbs 5:1-15"],"2026-03-04":["Isaiah 5:16-25","Genesis 4:16-26","Proverbs 5:15-6:3"],"2026-03-05":["Isaiah 6:1-12","Genesis 5:1-24","Proverbs 6:3-20"],"2026-03-06":["Isaiah 7:1-14","Genesis 5:32-6:8","Proverbs 6:20-7:1"],"2026-03-07":["Hebrews 3:12-16","Mark 1:35-44"],"2026-03-08":["Luke 24:36-53","Hebrews 1:10-14; 2:1-3","Mark 2:1-12"],"2026-03-09":["Luke 21:12-19","Hebrews 12:1-10","Matthew 20:1-16"],"2026-03-10":["Isaiah 9:9-10:4","Genesis 7:1-5","Proverbs 8:32-9:11"],"2026-03-11":["Isaiah 10:12-20","Genesis 7:6-9","Proverbs 9:12-18"],"2026-03-12":["Isaiah 11:10-12:2","Genesis 7:11-8:3","Proverbs 10:1-22"],"2026-03-13":["Isaiah 13:2-13","Genesis 8:4-21","Proverbs 10:31-11:12"],"2026-03-14":["Hebrews 10:32-38","Mark 2:14-17"],"2026-03-15":["John 20:1-10","Hebrews 4:14-16; 5:1-6","Mark 8:34-38; 9:1"],"2026-03-16":["Isaiah 14:24-32","Genesis 8:21-9:7","Proverbs 11:19-12:6"],"2026-03-17":["Isaiah 25:1-9","Genesis 9:8-17","Proverbs 12:8-22"],"2026-03-18":["Isaiah 26:21-27:9","Genesis 9:18-10:1","Proverbs 12:23-13:9"],"2026-03-19":["Isaiah 28:14-22","Genesis 10:32-11:9","Proverbs 13:19-14:6"],"2026-03-20":["Isaiah 29:13-23","Genesis 12:1-7","Proverbs 14:15-26"],"2026-03-21":["Hebrews 6:9-12","Mark 7:31-37"],"2026-03-22":["John 20:11-18","Hebrews 6:13-20","Mark 9:17-31"],"2026-03-23":["Isaiah 37:33-38:6","Genesis 13:12-18","Proverbs 14:27-15:4"],"2026-03-24":["Isaiah 40:18-31","Genesis 15:1-15","Proverbs 15:7-19"],"2026-03-25":["Luke 1:39-49, 56","Hebrews 2:11-18","Luke 1:24-38"],"2026-03-26":["Isaiah 42:5-16","Genesis 18:20-33","Proverbs 16:17-17:17"],"2026-03-27":["Isaiah 45:11-17","Genesis 22:1-18","Proverbs 17:17-18:5"],"2026-03-28":["Hebrews 9:1-7","Luke 1:39-49, 56"],"2026-03-29":["John 20:19-31","Hebrews 9:11-14","Mark 10:32-45"],"2026-03-30":["Isaiah 48:17-49:4","Genesis 27:1-41","Proverbs 19:16-25"],"2026-03-31":["Isaiah 49:6-10","Genesis 31:3-16","Proverbs 21:3-21"],"2026-04-01":["Isaiah 58:1-11","Genesis 43:26-31; 45:1-16","Proverbs 21:23-22:4"],"2026-04-02":["Isaiah 65:8-16","Genesis 46:1-7","Proverbs 23:15-24:5"],"2026-04-03":["Isaiah 66:10-24","Genesis 49:33-50:26","Proverbs 31:8-31"]};
+const DAYS=[["2026-02-01","Pre-Lent","Sunday of the Publican & Pharisee","pre-sunday","🕊️","No fast (Triodion bright week)","Triodion begins. Avoid the pride of the Pharisee; embrace the humility of the Publican."],["2026-02-08","Pre-Lent","Sunday of the Prodigal Son","pre-sunday","🏠","Normal Wed & Fri fast","We are all prodigal sons. The Father runs to meet us when we return in repentance."],["2026-02-15","Pre-Lent","Meatfare Sunday","pre-sunday","⚖️","Last day to eat meat until Pascha","The Last Judgment. Saturday of Souls precedes. Last meat until Pascha."],["2026-02-22","Pre-Lent","Forgiveness Sunday","pre-sunday","🤝","Last day for dairy & eggs until Pascha","After Vespers: Rite of Forgiveness. We bow to one another before the Fast."],["2026-02-23","Week 1 — Clean Week","Clean Monday","strict","✨","STRICTEST: water only or xerophagy (bread, raw veg, no oil)","Great Lent begins! Canon of St. Andrew Mon–Thu. Black vestments. Prostrations."],["2026-02-24","Week 1 — Clean Week","Tuesday","fast","📖","Xerophagy — no oil, no wine","Canon of St. Andrew continues. Prayer of St. Ephraim at every service."],["2026-02-25","Week 1 — Clean Week","Wednesday","presanctified","🙏","Xerophagy — Presanctified Liturgy this evening","Liturgy of the Presanctified Gifts. Come having fasted from the morning."],["2026-02-26","Week 1 — Clean Week","Thursday","fast","📖","Xerophagy — no oil, no wine","Canon of St. Andrew (final day this week). Continue prostrations."],["2026-02-27","Week 1 — Clean Week","Friday — 1st Akathist","fast","✝️","Strict fast (xerophagy)","First Friday Akathist Hymn to the Theotokos (First Stasis) tonight."],["2026-02-28","Week 1 — Clean Week","Saturday of Souls","souls","🕯️","Oil & wine permitted","First Saturday of the Departed. Panakhida memorial service."],["2026-03-01","Week 1 — Clean Week","Sunday of Orthodoxy","sunday","🏛️","Fish, wine & oil permitted","Triumph of Orthodoxy (843 AD). Icons carried in procession. Synodikon proclaimed."],["2026-03-02","Week 2","Monday","fast","📖","Xerophagy Mon/Wed/Fri; oil & wine Tue/Thu","Continue prostrations and Prayer of St. Ephraim at each service."],["2026-03-03","Week 2","Tuesday","fast","📖","Oil & wine permitted","Small Compline with Canon of the Mother of God in the evening."],["2026-03-04","Week 2","Wednesday","presanctified","🙏","Xerophagy — Presanctified Liturgy this evening","Liturgy of the Presanctified Gifts. Come fasting from morning."],["2026-03-05","Week 2","Thursday","fast","📖","Oil & wine permitted","Isaiah's vision of the seraphim: 'Holy, holy, holy is the Lord of Hosts.'"],["2026-03-06","Week 2","Friday — 2nd Akathist","fast","✝️","Strict fast","Second Friday Akathist to the Theotokos (Second Stasis)."],["2026-03-07","Week 2","Saturday of Souls","souls","🕯️","Oil & wine permitted","Second Saturday of Souls. Memorial service for the departed."],["2026-03-08","Week 2","Sunday of St. Gregory Palamas","sunday","✨","Fish, wine & oil permitted","St. Gregory Palamas (+1359): we can truly experience God's uncreated energies — the divine light."],["2026-03-09","Week 3 — Holy Cross","Monday","fast","✝️","Xerophagy","Holy Cross placed in center of church all week. Strength for the second half of the Fast."],["2026-03-10","Week 3 — Holy Cross","Tuesday","fast","📖","Oil & wine permitted","Veneration of the Cross continues. 'Your Cross we venerate, O Master...'"],["2026-03-11","Week 3 — Holy Cross","Wednesday","presanctified","🙏","Xerophagy — Presanctified Liturgy","Presanctified Liturgy. Cross remains in nave for veneration."],["2026-03-12","Week 3 — Holy Cross","Thursday","fast","📖","Oil & wine permitted","Mid-point of the Fast! The Cross sustains us like water for a desert traveler."],["2026-03-13","Week 3 — Holy Cross","Friday — 3rd Akathist","fast","✝️","Strict fast","Third Friday Akathist to the Theotokos (Third Stasis)."],["2026-03-14","Week 3 — Holy Cross","Saturday","regular","📖","Oil & wine permitted","Regular Lenten Saturday. Healing of the deaf-mute: 'Ephphatha — be opened.'"],["2026-03-15","Week 3 — Holy Cross","Sunday of the Holy Cross","sunday","✝️","Fish, wine & oil permitted","Holy Cross venerated by all. 'If any man will come after Me, let him take up his cross daily.'"],["2026-03-16","Week 4 — St. John Climacus","Monday","fast","🪜","Xerophagy","The Ladder of Divine Ascent by St. John Climacus read during this week."],["2026-03-17","Week 4 — St. John Climacus","Tuesday","fast","📖","Oil & wine permitted","St. Alexis, Man of God (Mar 17). Rainbow covenant: God's faithfulness."],["2026-03-18","Week 4 — St. John Climacus","Wednesday","presanctified","🙏","Xerophagy — Presanctified Liturgy","Presanctified Gifts Liturgy. Evening of prayer and Holy Communion."],["2026-03-19","Week 4 — St. John Climacus","Thursday","fast","📖","Oil & wine permitted","Tower of Babel: pride scatters; Pentecost unites. Check with priest re: 40 Holy Martyrs."],["2026-03-20","Week 4 — St. John Climacus","Friday — 4th & Final Akathist","fast","✝️","Strict fast","FOURTH and final Friday Akathist. The complete Akathist Hymn — all 24 stanzas. Do not miss!"],["2026-03-21","Week 4 — St. John Climacus","Saturday","regular","📖","Oil & wine permitted","Regular Saturday. 'This kind comes out by nothing but prayer and fasting.'"],["2026-03-22","Week 4 — St. John Climacus","Sunday of St. John Climacus","sunday","🪜","Fish, wine & oil permitted","St. John Climacus (+649), author of 'The Ladder of Divine Ascent.' 30 steps to God."],["2026-03-23","Week 5 — St. Mary of Egypt","Monday","fast","🏜️","Xerophagy","Life of St. Mary of Egypt read at Great Compline. No sin too great for God's mercy."],["2026-03-24","Week 5 — St. Mary of Egypt","Tuesday","fast","📖","Oil & wine permitted","'Those who wait upon the Lord shall renew their strength...' (Isaiah 40)"],["2026-03-25","Week 5 — St. Mary of Egypt","★ ANNUNCIATION — Great Feast","feast","👼","FISH, WINE & OIL PERMITTED — Great Feast!","'Rejoice, O Full of Grace!' One of the 12 Great Feasts. Lenten tone set aside today."],["2026-03-26","Week 5 — St. Mary of Egypt","Thursday — ★★ GREAT CANON","strict","🕯️","Xerophagy — major service tonight","★★ THE GREAT CANON OF ST. ANDREW OF CRETE — all 250 troparia at Matins. DO NOT MISS."],["2026-03-27","Week 5 — St. Mary of Egypt","Friday","fast","✝️","Strict fast","Fifth Friday. Lenten services approach their climax."],["2026-03-28","Week 5 — St. Mary of Egypt","★ AKATHIST SATURDAY","akathist","🌹","Oil & wine permitted","Complete Akathist Hymn to the Theotokos at Matins. Most beloved Marian service of the year."],["2026-03-29","Week 5 — St. Mary of Egypt","Sunday of St. Mary of Egypt","sunday","🏜️","Fish, wine & oil permitted","St. Mary of Egypt: 47 years in desert repentance. No sin is beyond God's forgiveness."],["2026-03-30","Week 6 — Final Week","Monday","fast","📖","Xerophagy","Final week of Great Lent. Redouble prayer, fasting, and almsgiving."],["2026-03-31","Week 6 — Final Week","Tuesday","fast","📖","Oil & wine permitted","'God will provide Himself the lamb.' Abraham's sacrifice prefigures Christ."],["2026-04-01","Week 6 — Final Week","Wednesday — Final Presanctified","presanctified","🙏","Xerophagy — FINAL Presanctified Liturgy","Last Presanctified Liturgy of the season. Isaiah 58: true fasting is justice and mercy."],["2026-04-02","Week 6 — Final Week","Thursday","fast","📖","Oil & wine permitted","Last full weekday of Great Lent. Jacob wrestling with the angel — the Christian's struggle in prayer."],["2026-04-03","Week 6 — Final Week","Friday — Great Lent Ends","fast","🌅","STRICT FAST — last weekday of Great Lent","Great Lent ends at Vespers. Joseph (type of Christ): sold by brothers, raised to glory."],["2026-04-04","Week 6 — Final Week","★ LAZARUS SATURDAY","lazarus","🌿","Fish ROE (ikra), wine & oil permitted","Resurrection of Lazarus — foretaste of Pascha. Paschal resurrection hymns chanted today!"],["2026-04-05","Week 6 — Final Week","★ PALM SUNDAY","palm","🌴","Fish, wine & oil permitted — Great Feast!","One of the 12 Great Feasts. Palms blessed. 'Blessed is He who comes in the name of the Lord!'"],["2026-04-06","Holy Week","Holy Monday","holy","🕯️","Strict fast (xerophagy)","Bridegroom Matins: 'Behold the Bridegroom comes at midnight...' Parable of the Barren Fig Tree."],["2026-04-07","Holy Week","Holy Tuesday","holy","🕯️","Strict fast","Parables of the Talents and Ten Virgins. 'The foolish took no oil with them.'"],["2026-04-08","Holy Week","Holy Wednesday","holy","🕯️","Strict fast","Woman anoints Christ. Judas betrays. Holy Unction often offered this evening."],["2026-04-09","Holy Week","★ Holy Thursday","holy","🏆","Oil & wine at Divine Liturgy","Divine Liturgy of St. Basil. Last Supper. Holy Communion. 12 Passion Gospels at Jerusalem Matins."],["2026-04-10","Holy Week","★★ GREAT & HOLY FRIDAY","holy","✝️","STRICTEST FAST — total abstinence","Crucifixion and death of Christ. Epitaphios brought out. Lamentation service in the evening."],["2026-04-11","Holy Week","Holy Saturday","holy","🌑","Fast until Paschal Liturgy","Christ in the tomb. Vesperal Liturgy with 15 OT readings. Paschal Vigil after midnight..."],["2026-04-12","Holy Week","★★★ HOLY PASCHA — CHRIST IS RISEN!","pascha","🌟","THE FAST IS BROKEN! ALL FOODS PERMITTED!","CHRIST IS RISEN! TRULY HE IS RISEN! Χριστὸς Ἀνέστη! Христос Воскресе! The 40-day Paschal season begins!"]];
+const TC={"pre-sunday":{bg:"#2a1a40",bdr:"#9b59b6",badge:"Pre-Lent",bc:"#9b59b6"},"sunday":{bg:"#0d2238",bdr:"#3498db",badge:"Sunday",bc:"#3498db"},"strict":{bg:"#2c1515",bdr:"#c0392b",badge:"Strict Fast",bc:"#c0392b"},"fast":{bg:"#141420",bdr:"#444",badge:"Fast Day",bc:"#555"},"presanctified":{bg:"#0d1a0d",bdr:"#27ae60",badge:"Presanctified",bc:"#27ae60"},"souls":{bg:"#0d1a1a",bdr:"#2ecc71",badge:"Souls Sat.",bc:"#2ecc71"},"akathist":{bg:"#1a0d2a",bdr:"#e74c3c",badge:"Akathist",bc:"#e74c3c"},"feast":{bg:"#1a1a05",bdr:"#f1c40f",badge:"Great Feast!",bc:"#f1c40f"},"lazarus":{bg:"#051a1a",bdr:"#1abc9c",badge:"Lazarus Sat.",bc:"#1abc9c"},"palm":{bg:"#051a05",bdr:"#27ae60",badge:"Palm Sunday",bc:"#27ae60"},"holy":{bg:"#1a0f05",bdr:"#e67e22",badge:"Holy Week",bc:"#e67e22"},"pascha":{bg:"#1a1000",bdr:"#f1c40f",badge:"PASCHA!",bc:"#f1c40f"},"regular":{bg:"#141420",bdr:"#444",badge:"Fast Day",bc:"#555"}};
+const KD=[{date:"Feb 22",label:"Forgiveness Sunday",color:"#9b59b6",idx:3},{date:"Feb 23",label:"Clean Monday",color:"#c0392b",idx:4},{date:"Mar 1",label:"Sunday of Orthodoxy",color:"#3498db",idx:10},{date:"Mar 15",label:"Holy Cross Sunday",color:"#27ae60",idx:24},{date:"Mar 25",label:"Annunciation ★",color:"#f1c40f",idx:34},{date:"Mar 26",label:"Great Canon ★★",color:"#e74c3c",idx:35},{date:"Mar 28",label:"Akathist Sat.",color:"#e74c3c",idx:37},{date:"Apr 4",label:"Lazarus Sat.",color:"#1abc9c",idx:44},{date:"Apr 5",label:"Palm Sunday",color:"#27ae60",idx:45},{date:"Apr 10",label:"Holy Friday",color:"#e67e22",idx:50},{date:"Apr 12",label:"PASCHA 🌟",color:"#f1c40f",idx:52}];
+let done={};try{done=JSON.parse(localStorage.getItem("lent26")||"{}");}catch(e){}
+function sv(){try{localStorage.setItem("lent26",JSON.stringify(done));}catch(e){}}
+function isDone(d){return!!done[d];}
+function toggleDone(ds){done[ds]=!done[ds];if(!done[ds])delete done[ds];sv();updateProg();buildTodayCard();renderCal();}
+function tod(){const d=new Date();d.setHours(0,0,0,0);return d;}
+function pD(s){return new Date(s+"T00:00:00");}
+function cd(s){const d=Math.ceil((pD(s)-tod())/86400000);if(d===0)return"Today";if(d<0)return Math.abs(d)+"d ago";return"In "+d+"d";}
+function fD(s){return pD(s).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});}
+function getRd(ds){return READINGS[ds]||null;}
+function updateProg(){
+  const total=Object.keys(READINGS).length;
+  const comp=Object.keys(done).filter(k=>done[k]&&READINGS[k]).length;
+  const pct=Math.round(comp/total*100);
+  document.getElementById("pgbf").style.width=pct+"%";
+  document.getElementById("pgct").textContent=comp+" / "+total;
+}
+function showSc(id,btn){
+  document.querySelectorAll(".sc").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".nb").forEach(b=>b.classList.remove("active"));
+  document.getElementById("sc-"+id).classList.add("active");
+  btn.classList.add("active");
+  if(id==="cal")setTimeout(scrollToToday,120);
+}
+function buildTodayCard(){
+  const t=tod();
+  const todayDay=DAYS.find(d=>cd(d[0])==="Today");
+  const next=DAYS.find(d=>pD(d[0])>=t);
+  if(next)document.getElementById("npill").innerHTML="<strong>Next:</strong> "+next[4]+" "+next[2]+" — <em>"+cd(next[0])+"</em>";
+  const pd=Math.ceil((pD("2026-04-12")-t)/86400000);
+  document.getElementById("pnum").textContent=pd>0?pd:"🌟";
+  const wrap=document.getElementById("tcwrap");
+  if(!todayDay){wrap.innerHTML="";return;}
+  const d=todayDay;const cfg=TC[d[3]]||TC["fast"];
+  const rs=getRd(d[0]);const dn=isDone(d[0]);
+  wrap.innerHTML=`<div class="tdc" style="background:${cfg.bg};border:1px solid ${cfg.bdr}">
+    <div class="tdc-top">
+      <div class="tdc-wk">${d[1]} · ${cfg.badge.toUpperCase()}</div>
+      <div class="tdc-lbl">${d[4]} ${d[2]}</div>
+      ${rs?`<button class="cbtn ${dn?"done":"undone"}" onclick="toggleDone('${d[0]}');event.stopPropagation()">${dn?"✓ Reading Done":"◯ Mark Reading Done"}</button>`:""}
+    </div>
+    ${rs?`<div class="ir"><div class="ir-ic">📖</div><div><div class="ir-lb">Today's Readings — @seeking.theosis</div>${rs.map(r=>`<div class="ir-rd">${r}</div>`).join("")}</div></div>`:""}
+    <div class="ir"><div class="ir-ic">🍽️</div><div><div class="ir-lb">Fasting Rule</div><div class="ir-bd">${d[5]}</div></div></div>
+    <div class="ir" style="cursor:pointer" onclick="openMod(${DAYS.indexOf(d)})"><div class="ir-ic">📌</div><div><div class="ir-lb">Note (tap for more)</div><div class="ir-bd">${d[6].substring(0,100)}…</div></div></div>
+  </div>`;
+}
+function buildTodayStatic(){
+  const ks=document.getElementById("kscroll");
+  KD.forEach(k=>{
+    const div=document.createElement("div");
+    div.className="kc";div.style.borderColor=k.color+"55";
+    div.innerHTML=`<div style="font-size:12px;font-weight:700;color:${k.color};font-family:monospace">${k.date}</div><div style="font-size:10px;color:#9a8070;margin-top:2px">${k.label}</div>`;
+    div.onclick=()=>openMod(k.idx);ks.appendChild(div);
+  });
+}
+let cTab="all",cSrch="";
+function drHTML(day,idx){
+  const[ds,wk,lbl,type,icon,fast,note]=day;
+  const cfg=TC[type]||TC["fast"];
+  const c=cd(ds);const isPast=c.includes("ago");const isT=c==="Today";
+  const rs=getRd(ds);const dn=isDone(ds);
+  return`<div class="dr${isPast?" past":""}${isT?" today-row":""}" style="background:${cfg.bg};border-left:3px solid ${cfg.bdr}" onclick="openMod(${idx})">
+    <div class="dr-ic">${icon}</div>
+    <div class="dr-inf">
+      <div class="dr-meta"><span class="dr-dt">${fD(ds)}</span><span class="dr-badge" style="background:${cfg.bc}22;color:${cfg.bc};border-color:${cfg.bc}44">${cfg.badge}</span>${isT?'<span class="dr-td">TODAY</span>':""}${rs&&dn?'<span style="font-size:11px;color:#27ae60">✓</span>':""}</div>
+      <div class="dr-lbl">${lbl}</div>
+      ${rs?`<div class="dr-rd">${rs.join(" · ")}</div>`:"<div class='dr-rd' style='color:#555'>No assigned reading</div>"}
+    </div>
+    <div class="dr-cd">${c}</div>
+  </div>`;
+}
+function buildCal(days,grouped){
+  const body=document.getElementById("cbody");
+  if(!grouped){body.innerHTML=days.length?days.map(d=>drHTML(d,DAYS.indexOf(d))).join(""):'<p style="text-align:center;color:#888;padding:40px">No results.</p>';return;}
+  const wks={};days.forEach(d=>{if(!wks[d[1]])wks[d[1]]=[];wks[d[1]].push(d);});
+  body.innerHTML=Object.entries(wks).map(([wk,wd])=>`<div class="whdr" onclick="var b=this.nextElementSibling;b.style.display=b.style.display==='none'?'':'none';this.querySelector('.chv').textContent=b.style.display===''?'▼':'▶'"><div><div class="whdr-t">${wk}</div></div><span class="chv">▼</span></div><div>${wd.map(d=>drHTML(d,DAYS.indexOf(d))).join("")}</div>`).join("");
+}
+function setCT(tab,btn){cTab=tab;cSrch="";document.getElementById("csearch").value="";document.querySelectorAll(".ctab").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderCal();}
+function doCS(v){cSrch=v.toLowerCase();renderCal();}
+function renderCal(){
+  if(cSrch){buildCal(DAYS.filter(d=>d[2].toLowerCase().includes(cSrch)||(READINGS[d[0]]||[]).join(" ").toLowerCase().includes(cSrch)||d[6].toLowerCase().includes(cSrch)),false);return;}
+  if(cTab==="sundays"){buildCal(DAYS.filter(d=>["pre-sunday","sunday","palm"].includes(d[3])),false);return;}
+  if(cTab==="weekdays"){buildCal(DAYS.filter(d=>["fast","strict","presanctified","regular"].includes(d[3])),false);return;}
+  if(cTab==="feasts"){buildCal(DAYS.filter(d=>["feast","pascha","lazarus","souls","akathist"].includes(d[3])),false);return;}
+  if(cTab==="holyweek"){buildCal(DAYS.filter(d=>d[1]==="Holy Week"),false);return;}
+  if(cTab==="undone"){buildCal(DAYS.filter(d=>READINGS[d[0]]&&!isDone(d[0])),false);return;}
+  buildCal(DAYS,true);
+}
+function scrollToToday(){const r=document.querySelectorAll(".today-row");if(r.length)r[0].scrollIntoView({behavior:"smooth",block:"center"});}
+function openMod(idx){
+  const d=DAYS[idx];const[ds,wk,lbl,type,icon,fast,note]=d;
+  const cfg=TC[type]||TC["fast"];const rs=getRd(ds);const dn=isDone(ds);
+  document.getElementById("mdt").style.color=cfg.bdr;
+  document.getElementById("mdt").textContent=fD(ds)+" · "+cd(ds)+" · "+wk;
+  document.getElementById("mtitle").textContent=icon+" "+lbl;
+  const cr=document.getElementById("mcrw");
+  if(rs){cr.style.display="flex";cr.innerHTML=`<button class="cbtn ${dn?"done":"undone"}" id="mchkbtn" onclick="toggleDone('${ds}');var b=document.getElementById('mchkbtn');b.className='cbtn '+(isDone('${ds}')?'done':'undone');b.textContent=isDone('${ds}')?'✓ Reading Done':'◯ Mark Reading Done'">${dn?"✓ Reading Done":"◯ Mark Reading Done"}</button>`;}
+  else{cr.style.display="none";}
+  let html="";
+  if(rs)html+=`<div class="msec" style="border-color:${cfg.bdr}44"><div class="msec-t" style="color:${cfg.bdr}">📖 Daily Readings — @seeking.theosis</div><div style="font-size:11px;color:#7a9a7a;font-family:monospace;margin-bottom:8px">Say the Prayer Before Scripture first</div>${rs.map(r=>`<div class="mrl">${r}</div>`).join("")}</div>`;
+  html+=`<div class="msec" style="border-color:${cfg.bdr}44"><div class="msec-t" style="color:${cfg.bdr}">🍽️ Fasting Rule</div><div class="msec-b">${fast}</div></div><div class="msec" style="border-color:${cfg.bdr}44"><div class="msec-t" style="color:${cfg.bdr}">🕯️ Liturgical Note</div><div class="msec-b">${note}</div></div>`;
+  document.getElementById("mbody").innerHTML=html;
+  document.getElementById("mov").classList.add("open");
+  document.getElementById("mbox").scrollTop=0;
+}
+function closeMod(e){if(!e||e.target===document.getElementById("mov"))document.getElementById("mov").classList.remove("open");}
+let tsY=0;
+document.getElementById("mbox").addEventListener("touchstart",e=>{tsY=e.touches[0].clientY;},{passive:true});
+document.getElementById("mbox").addEventListener("touchmove",e=>{if(document.getElementById("mbox").scrollTop===0&&e.touches[0].clientY-tsY>70)document.getElementById("mov").classList.remove("open");},{passive:true});
+buildTodayStatic();buildTodayCard();updateProg();renderCal();
+</script>
+</body>
+</html>
