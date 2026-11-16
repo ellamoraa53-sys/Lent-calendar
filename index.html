@@ -311,6 +311,25 @@ body{background:#0a0807;color:#f0e8d8;font-family:-apple-system,Georgia,serif;
       <div class="hrow-desc" id="nativity-home-progress">40 days of prayer, fasting and generosity · Journey to Bethlehem</div>
     </div><div class="hrow-arrow">›</div>
   </div>
+  <details style="margin:12px 14px;padding:14px;border:1px solid #574322;border-radius:12px;color:#dfc58f;font-size:13px;line-height:1.8">
+    <summary>Your saved progress</summary>
+    <p>Continue whenever you return using this same link, browser and device. Earlier Lent and confession progress is kept. Start the Nativity journey on any day; missed days are not marked complete.</p>
+    <p>Each visitor’s progress stays in their own browser. It does not sync automatically. Clearing browser data or using private browsing can remove it. On a shared device, people using the same browser share its progress.</p>
+    <button type="button" onclick="exportProgress()">Download progress backup</button>
+    <label style="display:block;margin-top:10px">Restore a backup <input type="file" accept=".json,application/json" onchange="importProgress(this)"></label>
+    <p>Backups include your private confession checklist. Keep the file private. Restoring adds saved completions without removing existing ones.</p>
+    <div id="progress-message" role="status"></div>
+  </details>
+  <details style="margin:14px;padding:14px;border:1px solid #574322;border-radius:12px;color:#dfc58f;line-height:1.8">
+    <summary>🔔 Readings, services & event reminders</summary>
+    <p>Choose a daily time in your device’s local timezone. Your reminder includes daily readings, services listed for today and Nativity observances. Keep this page open for browser reminders; a closed page cannot schedule alerts on its own.</p>
+    <label>Daily time <input id="reminder-time" type="time" value="07:00"></label>
+    <button type="button" onclick="enableReminders()">Enable browser reminders</button>
+    <button type="button" onclick="disableReminders()">Turn off</button>
+    <button type="button" onclick="downloadReminderCalendar()">Download calendar reminders</button>
+    <p>Import the calendar into your calendar app for daily alerts and Nativity date reminders when this page is closed. Re-importing may create duplicates. Observance reminders are not confirmed parish service times.</p>
+    <div id="reminder-message" role="status"></div>
+  </details>
   <div class="home-section-lbl">The Liturgical Year</div>
   <div class="hrow" onclick="goSection('ycal')">
     <div class="hrow-icon">📅</div>
@@ -358,7 +377,7 @@ body{background:#0a0807;color:#f0e8d8;font-family:-apple-system,Georgia,serif;
     <div class="hrow-icon">⭐</div>
     <div class="hrow-body">
       <div class="hrow-title">Kids Corner</div>
-      <div class="hrow-desc">Weekly Lenten stories · Children&#39;s prayers · Activities</div>
+      <div class="hrow-desc">Nativity & Lenten stories · Children&#39;s prayers · Saved activities</div>
     </div>
     <div class="hrow-arrow">›</div>
   </div>
@@ -440,11 +459,13 @@ body{background:#0a0807;color:#f0e8d8;font-family:-apple-system,Georgia,serif;
 
 
 
-  <div style="background:#1a1000;border:1px solid #3a2800;border-radius:12px;margin:12px 14px;padding:12px 14px">
-    <div style="font-size:11px;font-weight:700;color:#c8a050;margin-bottom:8px;font-family:monospace;text-transform:uppercase;letter-spacing:.1em">🌟 Paschal Season</div>
-    <div class="wrow" style="border-bottom:none"><div><span style="font-size:12px;font-weight:700;color:#f0e8d8">Sundays</span><span style="font-size:11px;color:#c8a050;margin-left:8px">Divine Liturgy</span></div><span style="font-size:12px;font-family:monospace;color:#c8a050;font-weight:700">9:00 AM</span></div>
-    <div style="font-size:10px;color:#8a6a30;margin-top:10px;font-style:italic">Christ is Risen! You are all welcome to join us in prayer. ✝️</div>
-    <div id="svc-lang-greet" style="font-size:12px;margin-top:6px;min-height:18px"></div>
+  <div class="kids-card" style="color:#dfc58f;background:#15100b;border-color:#574322">
+    <h2 style="font-size:18px">⭐ Nativity Fast · 15 Nov–24 Dec 2026</h2>
+    <p>Prepare for the Nativity through prayer, worship, generosity and reconciliation.</p>
+    <p><strong>Observances and services to look out for</strong></p>
+    <p>21 Nov · Entry of the Theotokos — Divine Liturgy<br>6 Dec · St. Nicholas — parish observance<br>24 Dec · Eve of the Nativity — Royal Hours, Vespers and festal services according to the parish order<br>25 Dec · Nativity of Christ — festal Divine Liturgy</p>
+    <p>These are seasonal observances, not confirmed parish appointments. Confirm dates, service arrangements and times with St. Anargyroi; Christmas services may begin on the evening of 24 December. Ask the priest about confession during the fast.</p>
+    <a href="https://dcs.goarch.org/goa/dcs/parish.html" target="_blank" rel="noopener" style="color:#e8c870">Service texts · Digital Chant Stand ↗</a>
   </div>
   <div class="sec-lbl">Upcoming Services</div>
   <div id="svc-list"></div>
@@ -552,14 +573,14 @@ body{background:#0a0807;color:#f0e8d8;font-family:-apple-system,Georgia,serif;
     <div style="font-size:11px;color:#5050a0;margin-top:2px">For our youngest parishioners</div>
   </div>
 
-  <div id="kids-content"></div>
+  <div id="kids-nativity"></div><div id="kids-content"></div>
   <div style="height:100px"></div>
 </div>
 
 <!-- LENT SECTION SCREEN -->
 <div class="pg" id="pg-nativity">
-  <div class="sec-hdr"><button class="back-btn" onclick="goHome()">‹ Home</button><div class="sec-hdr-title">⭐ Nativity Fast 2026</div></div>
-  <div id="nativity-summary" style="padding:16px;color:#e8c870;line-height:1.8"></div>
+  <div class="sec-hdr"><button class="sec-back" onclick="goHome()">‹ Home</button><div class="sec-hdr-title">⭐ Nativity Fast 2026</div></div>
+  <div id="nativity-tracker"></div><div id="nativity-summary" style="padding:16px;color:#e8c870;line-height:1.8"></div>
   <div style="margin:0 14px 14px;padding:14px;background:#15120c;border:1px solid #574322;border-radius:12px;color:#c0a060;font-size:13px;line-height:1.8">
     <strong>Prepare a place for Christ</strong><br>Keep a manageable daily prayer rule, read Scripture, give to someone in need, and seek reconciliation. If you are joining late, begin today.<br><br>
     <strong>Fasting guidance</strong><br>This calendar follows 15 November–24 December, with the Nativity on 25 December. Food allowances vary by parish and personal circumstances; follow your priest’s guidance. The daily food labels are a general guide, not an individual fasting rule.<br><br>
@@ -838,6 +859,7 @@ function nativityStatus(date) {
   return 'The 2026 fast is complete · Browse the journey to Bethlehem';
 }
 function buildNativitySection() {
+  renderNativityTracker();
   document.getElementById('nativity-summary').textContent = nativityStatus(tod());
   var body = document.getElementById('pg-nativity-body');
   body.innerHTML = '<div class="ycal-loading">Loading the Nativity calendar…</div>';
@@ -1412,7 +1434,8 @@ function makeFollowLinks(dateStr){
 function updateProgress(){
   var done=0,total=0;
   D.forEach(function(d){
-    if(d[3]!=='pre'&&d[3]!=='pascha'){total++;}
+    if(d[3]==='pre'||d[3]==='pascha')return;
+    total++;
     var key='done_'+d[0];
     try{if(localStorage.getItem(key)==='1')done++;}catch(e){}
   });
@@ -1694,6 +1717,7 @@ var KIDS_WEEKS = [
 ];
 
 function buildKids(){
+  buildNativityKids();
   var t=tod();
   var pascha=pd("2026-04-12");
   var weekNum=0;
@@ -1803,29 +1827,7 @@ function renderAnnouncements(items){
 
 
 // ── SERVICE WORKER (offline support) ──────────────────────────────
-if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    var swCode = `
-const CACHE='st-anargyroi-v3';
-const URLS=['/'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS))));
-self.addEventListener('fetch',e=>e.respondWith(
-  caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
-    if(res.ok){var clone=res.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));}
-    return res;
-  }).catch(()=>caches.match(e.request)))
-));
-self.addEventListener('activate',e=>e.waitUntil(
-  caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
-));`;
-    var blob=new Blob([swCode],{type:'application/javascript'});
-    var url=URL.createObjectURL(blob);
-    navigator.serviceWorker.register(url).then(function(){
-      console.log('SW registered — app works offline');
-    });
-  });
-}
-
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(e){console.info('Offline support unavailable',e.message);});});}
 
 // ── MULTILINGUAL PASCHAL/LENTEN GREETING ──────────────────────────
 var GREETINGS=[
@@ -2812,11 +2814,120 @@ function showYCalDayModal(day) {
     if(followHtml) html += '<div style="margin:0 14px 12px">' + followHtml + '</div>';
   }
 
+  var completed = savedFlag('done_'+day.date);
+  html += '<button type="button" style="margin:14px;padding:14px;color:#dfc58f;background:#17120b;border:1px solid #c8a050;border-radius:10px" onclick="toggleCalendarProgress(\''+day.date+'\')">'+(completed?'✓ Completed · Undo':'Mark this day complete')+'</button>';
   mb.innerHTML = html;
   ov.classList.add('on');
 }
 
 
+
+var NATIVITY_KIDS = [["2026-11-15", "⭐", "Make room for Jesus", "The Nativity Fast is a journey towards celebrating the birth of Jesus. We prepare our hearts by praying, sharing and being kind. You can begin today, even if the fast has already started.", "Jesus, help me make room for Your love today. Amen.", "Make a paper star. Write one kind thing you can do today.", "Luke 2:1–7"], ["2026-11-21", "🌹", "Mary enters the Temple", "At the feast of the Entry of the Theotokos, we remember Mary being brought to the Temple as a little girl. Her life reminds us to listen to God and grow in love.", "Dear God, help me listen and love You as Mary did. Amen.", "Draw your church and talk with a grown-up about what you love there.", "Luke 1:46–55 · family reflection"], ["2026-11-29", "🤝", "Share with a neighbour", "When people asked John the Baptist how to prepare, he told them to share clothing and food with people who needed them. Preparing for Jesus includes caring for others.", "Lord, help me notice someone who needs kindness. Amen.", "With a grown-up, choose food or a good toy to give to someone in need.", "Luke 3:10–11"], ["2026-12-06", "🎁", "St. Nicholas gives quietly", "St. Nicholas was a bishop remembered for his generosity and care for people in need. We can follow his example by giving without needing praise.", "Jesus, teach me to give with a happy heart. Amen.", "Do a secret kindness for someone in your family.", "Matthew 6:1–4 · family reflection"], ["2026-12-13", "🕯️", "Mary says yes to God", "The angel Gabriel told Mary she would be the mother of Jesus. Mary trusted God. Her loving yes helps us learn to trust Him too.", "Lord, help me trust You when something feels new. Amen.", "Make a paper candle and write a prayer for your family.", "Luke 1:26–38"], ["2026-12-20", "🐑", "The journey to Bethlehem", "Mary and Joseph went to Bethlehem. Jesus was born and laid in a manger. Angels brought the shepherds good news, and they went to see Him. Christ is born! Glorify Him!", "Lord Jesus, thank You for coming to us. Fill our home with peace. Amen.", "Draw the Nativity, then read the story together on Christmas Day.", "Luke 2:1–20"]];
+
+function savedFlag(key) { try{return localStorage.getItem(key)==='1';}catch(e){return false;} }
+function saveCompletion(key) {
+  try { if(savedFlag(key)) localStorage.removeItem(key); else localStorage.setItem(key,'1'); return true; }
+  catch(e) { alert('Your browser could not save progress. Enable browser storage and try again.'); return false; }
+}
+function renderNativityTracker() {
+  var done=0;
+  for(var i=0;i<40;i++){var d=new Date(2026,10,15+i);if(savedFlag('done_'+localDateStr(d)))done++;}
+  var el=document.getElementById('nativity-tracker');
+  if(el)el.innerHTML='<div style="margin:14px;color:#dfc58f">Your journey · '+done+' / 40 days completed<progress style="display:block;width:100%;margin-top:8px" max="40" value="'+done+'" aria-label="Nativity days completed"></progress><small>Begin any day. Your previous progress stays saved.</small></div>';
+}
+function toggleCalendarProgress(date) {
+  if(!saveCompletion('done_'+date))return;
+  updateProgress();renderNativityTracker();
+  if(CAL_PARSED){var day=CAL_PARSED.find(function(d){return d.date===date;});if(day)showYCalDayModal(day);}
+}
+function buildNativityKids() {
+  var el=document.getElementById('kids-nativity');if(!el)return;
+  var done=NATIVITY_KIDS.filter(function(w){return savedFlag('kids_nativity_'+w[0]);}).length;
+  var html='<div class="kids-card"><h2>⭐ Journey to Bethlehem</h2><p>Nativity Fast · 15 November–24 December</p><p>'+done+' / 6 family activities completed. Begin whenever you like!</p><p>Pray, share and practise kindness. Children’s food fasting should be agreed with their parents and priest.</p></div>';
+  NATIVITY_KIDS.forEach(function(w,i){
+    var checked=savedFlag('kids_nativity_'+w[0]);
+    html+='<details class="kids-card"'+(localDateStr(tod())>=w[0]&&(i===5||localDateStr(tod())<NATIVITY_KIDS[i+1][0])?' open':'')+'><summary class="kids-title">'+w[1]+' '+w[2]+' · '+fd(w[0])+'</summary><p class="kids-story">'+w[3]+'</p><p class="kids-prayer">🙏 '+w[4]+'</p><p class="kids-activity">'+w[5]+'</p><p>📖 '+w[6]+' (family reading)</p><label><input type="checkbox" '+(checked?'checked':'')+' onchange="toggleNativityKid('+i+')"> We tried this activity</label></details>';
+  });
+  el.innerHTML=html+'<div class="home-section-lbl">Lent & Pascha stories</div>';
+}
+function toggleNativityKid(i){if(saveCompletion('kids_nativity_'+NATIVITY_KIDS[i][0]))buildNativityKids();}
+function progressKey(key){return /^(done_\d{4}-\d{2}-\d{2}|conf_\d+_\d+|kids_nativity_\d{4}-\d{2}-\d{2})$/.test(key);}
+function progressMessage(text){document.getElementById('progress-message').textContent=text;}
+function exportProgress(){
+  try{
+    var entries={};for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(progressKey(k)&&localStorage.getItem(k)==='1')entries[k]='1';}
+    var blob=new Blob([JSON.stringify({app:'st-anargyroi-progress',version:1,entries:entries},null,2)],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='parish-progress-'+localDateStr(tod())+'.json';a.click();setTimeout(function(){URL.revokeObjectURL(a.href);},1000);
+    progressMessage('Backup downloaded. Keep it private.');
+  }catch(e){progressMessage('Unable to export progress in this browser.');}
+}
+async function importProgress(input){
+  try{
+    var file=input.files[0];if(!file)return;if(file.size>1000000)throw Error('File too large');
+    var data=JSON.parse(await file.text());
+    if(data.app!=='st-anargyroi-progress'||data.version!==1||!data.entries||Array.isArray(data.entries)||typeof data.entries!=='object')throw Error('Invalid backup');
+    var keys=Object.keys(data.entries);
+    if(keys.some(function(k){return !progressKey(k)||data.entries[k]!=='1';}))throw Error('Invalid entries');
+    keys.forEach(function(k){localStorage.setItem(k,'1');});
+    updateProgress();renderNativityTracker();buildNativityKids();buildConfession();
+    progressMessage('Restored '+keys.length+' completions. Existing progress was kept.');
+  }catch(e){progressMessage('Could not restore backup: '+e.message);}
+  input.value='';
+}
+window.addEventListener('storage',function(){updateProgress();renderNativityTracker();buildNativityKids();if(currentSection==='confession')buildConfession();});
+
+
+var NATIVITY_EVENTS={'2026-11-21':'Entry of the Theotokos','2026-12-06':'St. Nicholas','2026-12-24':'Eve of the Nativity','2026-12-25':'Nativity of Christ'};
+function reminderMessage(text){var e=document.getElementById('reminder-message');if(e)e.textContent=text;}
+function reminderTime(){try{return localStorage.getItem('parish_reminder_time')||'07:00';}catch(e){return '07:00';}}
+async function deliverReminder(title,body){
+  if('serviceWorker' in navigator){
+    var reg=await navigator.serviceWorker.getRegistration();
+    if(reg&&reg.active){await reg.showNotification(title,{body:body,tag:'parish-daily',data:{url:location.href}});return;}
+  }
+  new Notification(title,{body:body,tag:'parish-daily'});
+}
+async function enableReminders(){
+  if(!window.isSecureContext||!('Notification' in window)){reminderMessage('Browser alerts are unavailable here. Use the calendar download instead. On iPhone, web notifications require an installed Home Screen web app.');return;}
+  var time=document.getElementById('reminder-time').value;
+  if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)){reminderMessage('Choose a valid reminder time.');return;}
+  try{
+    var permission=await Notification.requestPermission();
+    if(permission!=='granted'){reminderMessage('Notifications are not enabled. Check browser permissions or use the calendar download.');return;}
+    await deliverReminder('Parish reminders enabled','Daily reminder at '+time+' while the calendar is open.');
+    localStorage.setItem('parish_reminder_time',time);localStorage.setItem('parish_reminder_enabled','1');
+    reminderMessage('Enabled for '+time+' in your device timezone. Keep the page open for alerts.');
+  }catch(e){reminderMessage('Could not enable alerts. Try the calendar download instead.');}
+}
+function disableReminders(){try{localStorage.removeItem('parish_reminder_enabled');reminderMessage('Browser reminders turned off. Remove imported reminders separately in your calendar app.');}catch(e){reminderMessage('Unable to update browser settings.');}}
+var reminderBusy=false;
+async function checkDailyReminder(){
+  if(reminderBusy||!('Notification' in window)||Notification.permission!=='granted')return;
+  try{
+    if(!savedFlag('parish_reminder_enabled'))return;
+    var now=new Date(),date=localDateStr(now),clock=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+    if(clock<reminderTime()||localStorage.getItem('parish_last_reminder')===date)return;
+    reminderBusy=true;
+    var day=CAL_PARSED&&CAL_PARSED.find(function(d){return d.date===date;});
+    var lines=['Daily readings: '+(day?day.readings:'Open the calendar for today’s readings.')];
+    if(SVC[date])lines.push('Services: '+SVC[date].map(function(x){return x[0]+' '+x[1];}).join('; '));
+    if(NATIVITY_EVENTS[date])lines.push('Observance: '+NATIVITY_EVENTS[date]+'. Confirm service times with the parish.');
+    await deliverReminder('Your parish companion · '+fd(date),lines.join('\n'));
+    localStorage.setItem('parish_last_reminder',date);
+  }catch(e){reminderMessage('Could not show a reminder. Check notification permissions.');}finally{reminderBusy=false;}
+}
+function downloadReminderCalendar(){
+  var time=document.getElementById('reminder-time').value||reminderTime();
+  var hhmm=time.replace(':','')+'00',date=localDateStr(tod()).replace(/-/g,''),stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z/,'Z');
+  var lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//St Anargyroi//Parish Companion//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:daily-readings@st-anargyroi-companion','DTSTAMP:'+stamp,'DTSTART:'+date+'T'+hhmm,'DURATION:PT10M','RRULE:FREQ=DAILY','SUMMARY:Daily readings and parish calendar','DESCRIPTION:Open your parish calendar for readings and services.','URL:'+location.href,'BEGIN:VALARM','TRIGGER:PT0M','ACTION:DISPLAY','DESCRIPTION:Time for daily readings','END:VALARM','END:VEVENT'];
+  Object.keys(NATIVITY_EVENTS).forEach(function(d){if(d<localDateStr(tod()))return;lines.push('BEGIN:VEVENT','UID:nativity-'+d+'@st-anargyroi-companion','DTSTAMP:'+stamp,'DTSTART:'+d.replace(/-/g,'')+'T'+hhmm,'DURATION:PT10M','SUMMARY:'+NATIVITY_EVENTS[d],'DESCRIPTION:Observance reminder only. Confirm parish service times.','BEGIN:VALARM','TRIGGER:PT0M','ACTION:DISPLAY','DESCRIPTION:Nativity observance today','END:VALARM','END:VEVENT');});
+  lines.push('END:VCALENDAR');
+  var url=URL.createObjectURL(new Blob([lines.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='parish-reminders.ics';a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);
+  reminderMessage('Calendar downloaded. Import it and check that calendar notifications are enabled.');
+}
+setTimeout(function(){document.getElementById('reminder-time').value=reminderTime();if(savedFlag('parish_reminder_enabled'))reminderMessage('Browser reminders enabled for '+reminderTime()+' while this page is open.');decompressCalData(function(){checkDailyReminder();});},1000);
+setInterval(checkDailyReminder,30000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)checkDailyReminder();});
 
 // INIT — deferred to avoid iOS parse blocking
 setTimeout(function(){
