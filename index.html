@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Great Lent ✝">
+<meta name="apple-mobile-web-app-title" content="Parish Companion ✝">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0a0807">
-<title>St. Anargyroi — Nairobi ✝</title>
+<title>Nativity Fast 2026 · St. Anargyroi — Nairobi ✝</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#0a0807;color:#f0e8d8;font-family:-apple-system,Georgia,serif;
@@ -305,6 +305,12 @@ body{background:#0a0807;color:#f0e8d8;font-family:-apple-system,Georgia,serif;
     <div class="home-pill" id="home-pill">—</div>
   </div>
 
+  <div class="hrow" onclick="goSection('nativity')" style="border:1px solid #c8a050;border-radius:12px;margin:12px 14px">
+    <div class="hrow-icon">⭐</div><div class="hrow-body">
+      <div class="hrow-title">Nativity Fast 2026 <span class="hrow-badge">Nov 15 – Dec 24</span></div>
+      <div class="hrow-desc" id="nativity-home-progress">40 days of prayer, fasting and generosity · Journey to Bethlehem</div>
+    </div><div class="hrow-arrow">›</div>
+  </div>
   <div class="home-section-lbl">The Liturgical Year</div>
   <div class="hrow" onclick="goSection('ycal')">
     <div class="hrow-icon">📅</div>
@@ -551,6 +557,17 @@ body{background:#0a0807;color:#f0e8d8;font-family:-apple-system,Georgia,serif;
 </div>
 
 <!-- LENT SECTION SCREEN -->
+<div class="pg" id="pg-nativity">
+  <div class="sec-hdr"><button class="back-btn" onclick="goHome()">‹ Home</button><div class="sec-hdr-title">⭐ Nativity Fast 2026</div></div>
+  <div id="nativity-summary" style="padding:16px;color:#e8c870;line-height:1.8"></div>
+  <div style="margin:0 14px 14px;padding:14px;background:#15120c;border:1px solid #574322;border-radius:12px;color:#c0a060;font-size:13px;line-height:1.8">
+    <strong>Prepare a place for Christ</strong><br>Keep a manageable daily prayer rule, read Scripture, give to someone in need, and seek reconciliation. If you are joining late, begin today.<br><br>
+    <strong>Fasting guidance</strong><br>This calendar follows 15 November–24 December, with the Nativity on 25 December. Food allowances vary by parish and personal circumstances; follow your priest’s guidance. The daily food labels are a general guide, not an individual fasting rule.<br><br>
+    <strong>Dates to remember</strong><br>15 Nov · Fast begins<br>21 Nov · Entry of the Theotokos<br>6 Dec · St. Nicholas<br>20–24 Dec · Final preparation<br>24 Dec · Eve of the Nativity<br>25 Dec · Nativity of Christ<br><br>
+    <a href="https://www.oca.org/liturgics/outlines/fasting-fast-free-seasons-of-the-church" target="_blank" rel="noopener" style="color:#e8c870">About the Church’s fasting seasons ↗</a>
+  </div>
+  <div id="pg-nativity-body" aria-live="polite"></div>
+</div>
 <div class="pg" id="pg-lent">
   <div class="sec-hdr">
     <button class="sec-back" onclick="goHome()">← Home</button>
@@ -698,6 +715,7 @@ function goSection(id) {
   document.querySelectorAll('.nb').forEach(function(b){ b.classList.remove('on'); });
   showScreen(id);
   // Trigger build functions for each section
+  if (id === 'nativity')   { buildNativitySection(); }
   if (id === 'lent')       { buildLentSection(); }
   if (id === 'pascha')     { buildPaschaSection(); }
   if (id === 'prayer')     { initPrayer(); }
@@ -722,6 +740,8 @@ function go(id, btn) {
 // ── HOME SCREEN BUILD ────────────────────────────────────────────
 function buildHome() {
   var t = tod();
+  var np = document.getElementById('nativity-home-progress');
+  if (np) np.textContent = nativityStatus(t);
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var dateEl = document.getElementById('home-date');
@@ -808,6 +828,39 @@ function buildHome() {
   }
 }
 
+// Nativity Fast: civil-date arithmetic avoids daylight-saving offsets.
+function nativityStatus(date) {
+  var key = localDateStr(date);
+  var n = Math.round((Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()) - Date.UTC(2026,10,15))/86400000);
+  if (key < '2026-11-15') return 'Begins 15 November · 40 days preparing for the Nativity';
+  if (key <= '2026-12-24') return 'Day ' + (n+1) + ' of 40 · ' + (40-n) + ' days to the Nativity';
+  if (key === '2026-12-25') return 'Christ is born! Glorify Him!';
+  return 'The 2026 fast is complete · Browse the journey to Bethlehem';
+}
+function buildNativitySection() {
+  document.getElementById('nativity-summary').textContent = nativityStatus(tod());
+  var body = document.getElementById('pg-nativity-body');
+  body.innerHTML = '<div class="ycal-loading">Loading the Nativity calendar…</div>';
+  decompressCalData(function(days) {
+    var selected = days.filter(function(d){return d.date >= '2026-11-15' && d.date <= '2026-12-25';});
+    body.innerHTML = '';
+    selected.forEach(function(day, i) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      var isToday = day.date === localDateStr(tod());
+      button.style.cssText = 'display:block;width:calc(100% - 28px);margin:0 14px 8px;padding:14px;text-align:left;border:1px solid '+(isToday?'#c8a050':'#3a2800')+';border-radius:12px;background:#15100b;color:#dfc58f;font:inherit;cursor:pointer;line-height:1.7';
+      var label = i === 40 ? '⭐ Nativity of Christ' : 'Day '+(i+1)+' · '+day.name;
+      button.textContent = (isToday?'TODAY · ':'') + fd(day.date) + ' — ' + label;
+      var detail = document.createElement('div');
+      detail.style.cssText = 'font-size:12px;color:#bda67b';
+      detail.textContent = day.fast;
+      button.appendChild(detail);
+      button.onclick = function(){showYCalDayModal(day);};
+      body.appendChild(button);
+    });
+  });
+}
+
 // ── LENT SECTION BUILD ───────────────────────────────────────────
 function buildLentSection() {
   var el = document.getElementById('pg-lent-body');
@@ -829,7 +882,7 @@ function buildPaschaSection() {
 // ── SHARED CALENDAR HTML BUILDER ─────────────────────────────────
 function buildCalendarHTML(days, intro) {
   var t = tod();
-  var todStr = t.toLocaleDateString("en-CA");
+  var todStr = localDateStr(t);
   var html = '<div style="padding:10px 14px 6px;font-size:12px;color:#7a5a20;line-height:1.6">' + intro + '</div>';
 
   var lastWeek = '';
@@ -862,7 +915,7 @@ function buildCalendarHTML(days, intro) {
 function buildToday(){
   var t=tod();
   var now=t.getTime();
-  var todStr=t.toLocaleDateString("en-CA");
+  var todStr=localDateStr(t);
 
   // ── CLEAR TODAY WRAP (prevents duplicates on re-tap) ──────────
   var wrap=document.getElementById('today-wrap');
@@ -1219,7 +1272,7 @@ function makeSvcRows(svcs){
 
 function buildServices(){
   var t=tod();
-  var todStr=t.toLocaleDateString("en-CA");
+  var todStr=localDateStr(t);
   var svcKeys=Object.keys(SVC).sort();
   var upcoming=[];
   var past=[];
